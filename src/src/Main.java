@@ -103,18 +103,38 @@ public class Main {
     }
 
     public static int pow(int base, int power, int  mod) {
-        int a1 = base;
-        int z1 = power;
-        int x = 1;
+        double a1 = base;
+        double z1 = power;
+        double x = 1;
         while(z1 != 0) {
             while(z1 % 2 == 0) {
                 z1 = z1 / 2;
-                a1 = (int)((a1 * a1) % mod);
+                a1 = ((a1 * a1) % mod);
             }
             z1 = z1 - 1;
-            x = (int)((x * a1) % mod);
+            x = ((x * a1) % mod);
         }
-        return x;
+        return (int)x;
+    }
+
+    public static int pow2(int a, int b, int n)
+    {
+        // a^b mod n - возведение a в степень b по модулю n
+        int tmp = a;
+        int sum = tmp;
+        for (int i = 1; i < b; i++)
+        {
+            for (int j = 1; j < a; j++)
+            {
+                sum += tmp;
+                if (sum >= n)
+                {
+                    sum -= n;
+                }
+            }
+            tmp = sum;
+        }
+        return tmp;
     }
 
     public static int hash(char[] str, int multiply) {
@@ -128,7 +148,10 @@ public class Main {
     public static void signatureCreation(String string) {
 
         int first = untilPrime("Введите первое простое число:");
-        int second =  untilPrime("Введите второе простое число:");
+        int second;
+        do {
+             second= untilPrime("Введите второе простое число:");
+        }while (second==first);
 
         int multiply = first * second;
         int function = (first - 1) * (second - 1);
@@ -158,6 +181,7 @@ public class Main {
         System.out.println("Введите значение открытого ключа:");
         int exp = scan.nextInt();
         int multiply = scan.nextInt();
+
         int hash = hash(string.toCharArray(), multiply);
         if(hash != (pow(signature, exp, multiply)))
             System.out.println("Подпись недействительная.");
